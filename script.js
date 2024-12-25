@@ -257,8 +257,8 @@ document.addEventListener('mousemove', (e) => {
 
 // Animation loop to create smooth movement
 function animateApple() {
-    appleX += (targetX - appleX) * 0.06; // Smoothly interpolate X position
-    appleY += (targetY - appleY) * 0.06; // Smoothly interpolate Y position
+    appleX += (targetX - appleX) * 0.1; // Smoothly interpolate X position
+    appleY += (targetY - appleY) * 0.1; // Smoothly interpolate Y position
 
     appleImage.style.left = `${appleX}px`;
     appleImage.style.top = `${appleY}px`;
@@ -269,6 +269,15 @@ function animateApple() {
 // Start the animation
 animateApple();
 
+function shuffleOptions(options) {
+    // Create a shallow copy of the array to avoid modifying the original
+    const shuffled = [...options];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 
 
 function showQuestion() {
@@ -276,7 +285,10 @@ function showQuestion() {
     const currentQuestion = randomizedQuestions[currentQuestionIndex];
     questionElement.innerHTML = currentQuestion.question;
 
-    currentQuestion.answers.forEach(answer => {
+    // Get shuffled options and iterate over them
+    const shuffledAnswers = shuffleOptions(currentQuestion.answers);
+
+    shuffledAnswers.forEach(answer => {
         const button = document.createElement('button');
         button.textContent = answer.text;
         button.classList.add('answer-button');
@@ -290,6 +302,7 @@ function showQuestion() {
     emotionImage.src = 'neutral.png';
     MathJax.typesetPromise();
 }
+
 
 function resetState() {
     nextButton.classList.add('hidden');
